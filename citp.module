@@ -1,0 +1,19 @@
+<?php
+
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+function citp_file_download($uri) {
+  if (Drupal::currentUser()->isAnonymous()) {
+    $response = new RedirectResponse('/user/login?destination=' . file_url_transform_relative(file_create_url($uri)));
+    $response->send();
+  } else {
+    $fields = [
+      'uid' => Drupal::currentUser()->id(),
+      'file_url' => file_url_transform_relative(file_create_url($uri)),
+      'timestamp' => \Drupal::time()->getRequestTime(), 
+    ];
+    db_insert('citp_file_downloads')
+      ->fields($fields)
+      ->execute();
+  }
+}

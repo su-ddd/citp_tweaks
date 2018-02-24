@@ -1,0 +1,6 @@
+name: Campus IT Website Tweaks
+description: Custom tweaks for the Campus IT website
+package: Custom
+type: module
+version: 1.0
+core: 8.x

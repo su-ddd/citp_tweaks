@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the dbtng_example module.
+ */
+
+/**
+ * Implements hook_schema().
+ *
+ * Defines the database tables used by this module.
+ *
+ * @see hook_schema()
+ *
+ * @ingroup citp
+ */
+function citp_schema() {
+  $schema['citp_file_downloads'] = [
+    'description' => 'Stores file download information.',
+    'fields' => [
+      'pid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Event ID.',
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => "Visitor's {users}.uid",
+      ],
+      'file_url' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'URL of the file.',
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Timestamp.',
+      ],
+    ],
+    'primary key' => ['pid'],
+    'indexes' => [
+      'uid' => ['uid'],
+      'file_url' => ['file_url'],
+    ],
+  ];
+
+  return $schema;
+}
+
