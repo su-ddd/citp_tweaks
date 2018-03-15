@@ -17,3 +17,13 @@ function citp_file_download($uri) {
       ->execute();
   }
 }
+
+use Drupal\Core\Database\Query\AlterableInterface;
+
+/**
+ * Implements hook_query_TAG_alter(): tag search_$type with $type node_search.
+ */
+function citp_query_search_node_search_alter(AlterableInterface $query) {
+  // For testing purposes, restrict the query to node type 'article' only.
+  $query->condition('n.type', array('it_effort', 'page'), 'IN');
+}
