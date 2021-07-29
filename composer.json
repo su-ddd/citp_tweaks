@@ -1,0 +1,9 @@
+{
+  "name": "su-ddd/citp_tweaks",
+  "description": "Campus IT PLan Tweaks",
+  "type": "drupal-custom-module",
+  "homepage": "https://github.com/su-ddd/citp_tweaks",
+  "authors": [],
+  "license": "GPL-2.0+",
+  "minimum-stability": "dev"
+}
