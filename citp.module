@@ -1,10 +1,11 @@
 <?php
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Access\AccessResult;
 
 function citp_file_download($uri) {
   if (Drupal::currentUser()->isAnonymous()) {
-    $response = new RedirectResponse('/user/login?destination=' . file_url_transform_relative(file_create_url($uri)));
+    $response = new RedirectResponse('/saml_login?destination=' . file_url_transform_relative(file_create_url($uri)));
     $response->send();
   } else {
     $fields = [
@@ -12,9 +13,25 @@ function citp_file_download($uri) {
       'file_url' => file_url_transform_relative(file_create_url($uri)),
       'timestamp' => \Drupal::time()->getRequestTime(), 
     ];
-    db_insert('citp_file_downloads')
-      ->fields($fields)
-      ->execute();
+  $database = \Drupal::database();
+  $database->insert('citp_file_downloads')->fields($fields)->execute();
+  }
+}
+
+function citp_node_access(\Drupal\node\NodeInterface $node, $op, \Drupal\Core\Session\AccountInterface $account) {
+  //$type = $node->getType();
+  $is_front = \Drupal::service('path.matcher')->isFrontPage();
+  $current_path = \Drupal::service('path.current')->getPath(); // Gets internal path - for eg /node/29.
+  $path_alias = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+
+  if (($is_front) || ($path_alias == '/about')) {
+    return AccessResult::neutral();
+  } else {
+    if (\Drupal::currentUser()->isAnonymous()) {
+      return AccessResult::forbidden();
+    } else {
+      return AccessResult::neutral();
+    }
   }
 }
 
