@@ -22,7 +22,7 @@ function citp_node_access(\Drupal\node\NodeInterface $node, $op, \Drupal\Core\Se
   //$type = $node->getType();
   $is_front = \Drupal::service('path.matcher')->isFrontPage();
   $current_path = \Drupal::service('path.current')->getPath(); // Gets internal path - for eg /node/29.
-  $path_alias = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+  $path_alias = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
 
   if (($is_front) || ($path_alias == '/about')) {
     return AccessResult::neutral();
